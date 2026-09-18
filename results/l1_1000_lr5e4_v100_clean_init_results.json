@@ -1,0 +1,12 @@
+{
+  "experiment_name": "l1_1000_lr5e4_v100_clean_init",
+  "encoder": "vit_base_patch14_dinov2",
+  "bottleneck": "src.models.bottlenecks.cnn_bottleneck.CNNBottleneck",
+  "metrics": {
+    "test/loss": 0.08747673779726028,
+    "test/loss_l1": 0.08747673779726028,
+    "test/psnr": 20.500452041625977,
+    "test/ssim": 0.8249193429946899,
+    "test/lpips": 0.0
+  }
+}

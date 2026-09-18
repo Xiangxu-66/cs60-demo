@@ -1,0 +1,4 @@
+# @package _global_
+# A-depth: 6 RWKV layers (default)
+bottleneck:
+  num_layers: 6

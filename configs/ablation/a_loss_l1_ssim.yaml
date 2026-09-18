@@ -1,0 +1,15 @@
+# @package _global_
+# A-loss: L1 + SSIM only.
+# Mirrors the Stage 1 baseline weights and removes the perceptual term,
+# making it the cleanest "with vs without perceptual" comparison.
+loss:
+  _target_: src.losses.combined_loss.CombinedLoss
+  components:
+    l1:
+      _target_: src.losses.l1_loss.L1Loss
+      weight: 1.0
+    ssim:
+      _target_: src.losses.ssim_loss.SSIMLoss
+      weight: 0.1
+      window_size: 11
+    perceptual: null

@@ -1,0 +1,14 @@
+{
+  "experiment_name": "stage1_current_300_1ep",
+  "encoder": "vit_base_patch14_dinov2",
+  "bottleneck": "src.models.bottlenecks.cnn_bottleneck.CNNBottleneck",
+  "metrics": {
+    "test/loss": 0.1202404648065567,
+    "test/loss_l1": 0.060253094881772995,
+    "test/loss_ssim": 0.04586369916796684,
+    "test/loss_perceptual": 0.01412366982549429,
+    "test/psnr": 18.794658660888672,
+    "test/ssim": 0.7706815004348755,
+    "test/lpips": 0.0
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "experiment_name": "loss_probe_100_l1_ssim",
+  "encoder": "vit_base_patch14_dinov2",
+  "bottleneck": "src.models.bottlenecks.cnn_bottleneck.CNNBottleneck",
+  "metrics": {
+    "test/loss": 0.1490931659936905,
+    "test/loss_l1": 0.11294905841350555,
+    "test/loss_ssim": 0.022435076534748077,
+    "test/loss_perceptual": 0.013709018938243389,
+    "test/psnr": 18.358844757080078,
+    "test/ssim": 0.7756493091583252,
+    "test/lpips": 0.0
+  }
+}

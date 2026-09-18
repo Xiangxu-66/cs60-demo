@@ -1,0 +1,14 @@
+{
+  "experiment_name": "overfit10_stage1_lr5e4_continue10",
+  "encoder": "vit_base_patch14_dinov2",
+  "bottleneck": "src.models.bottlenecks.cnn_bottleneck.CNNBottleneck",
+  "metrics": {
+    "test/loss": 0.08620788156986237,
+    "test/loss_l1": 0.043778128921985626,
+    "test/loss_ssim": 0.031790558248758316,
+    "test/loss_perceptual": 0.010639183223247528,
+    "test/psnr": 21.9445743560791,
+    "test/ssim": 0.8410472869873047,
+    "test/lpips": 0.0
+  }
+}

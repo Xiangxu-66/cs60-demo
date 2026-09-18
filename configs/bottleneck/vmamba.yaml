@@ -1,0 +1,8 @@
+# B-4: VMamba bottleneck (O(N) peer comparison)
+_target_: src.models.bottlenecks.vmamba_bottleneck.VMambaBottleneck
+hidden_dim: 384
+num_layers: 6
+drop_rate: 0.1
+d_state: 16
+d_conv: 4
+expand: 2

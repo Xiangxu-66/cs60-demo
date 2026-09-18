@@ -1,0 +1,12 @@
+data/
+outputs/
+.git/
+*.ckpt
+*.pth
+*.pt
+__pycache__/
+*.egg-info/
+.vscode/
+.idea/
+multirun/
+.hydra/

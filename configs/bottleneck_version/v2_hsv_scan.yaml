@@ -1,0 +1,9 @@
+# V2: + HSV color-aware scan ordering
+# Problem solved: Raster scan breaks 2D color locality
+# Source: DRWKV (WACV 2026)
+bottleneck:
+  _target_: src.models.bottlenecks.versions.v2_hsv_scan.RWKVBottleneckV2
+  hidden_dim: 384
+  num_layers: 6
+  drop_rate: 0.1
+  hsv_sort_key: "hue"
