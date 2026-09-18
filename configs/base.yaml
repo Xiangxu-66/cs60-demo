@@ -1,0 +1,31 @@
+training:
+  max_epochs: 200
+  init_from_checkpoint: null
+  resume_from_checkpoint: null
+  batch_size: 16
+  num_workers: 4
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-4
+  scheduler: cosine         # cosine / step / plateau
+  warmup_epochs: 5
+  early_stopping:
+    patience: 20
+    monitor: "val/psnr"
+    mode: "max"
+  gradient_clip_val: 1.0
+
+evaluation:
+  save_samples_every_n_epochs: 10
+  num_visualization_samples: 8
+  enable_lpips: true
+
+logging:
+  log_dir: "outputs/logs"
+  results_dir: "results"
+  console_level: "INFO"
+
+checkpoint:
+  save_top_k: 3
+  monitor: "val/psnr"
+  mode: "max"
+  dirpath: "outputs/checkpoints"

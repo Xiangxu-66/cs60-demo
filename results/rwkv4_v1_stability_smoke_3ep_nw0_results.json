@@ -1,0 +1,12 @@
+{
+  "experiment_name": "rwkv4_v1_stability_smoke_3ep_nw0",
+  "encoder": "vit_base_patch14_dinov2",
+  "bottleneck": "src.models.bottlenecks.rwkv_bottleneck.RWKVBottleneckV1",
+  "metrics": {
+    "test/loss": 0.10580858588218689,
+    "test/loss_l1": 0.10580858588218689,
+    "test/psnr": 19.088241577148438,
+    "test/ssim": 0.8205874562263489,
+    "test/lpips": 0.0
+  }
+}

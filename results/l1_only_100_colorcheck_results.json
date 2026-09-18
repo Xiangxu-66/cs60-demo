@@ -1,0 +1,12 @@
+{
+  "experiment_name": "l1_only_100_colorcheck",
+  "encoder": "vit_base_patch14_dinov2",
+  "bottleneck": "src.models.bottlenecks.cnn_bottleneck.CNNBottleneck",
+  "metrics": {
+    "test/loss": 0.11885924637317657,
+    "test/loss_l1": 0.11885924637317657,
+    "test/psnr": 17.540668487548828,
+    "test/ssim": 0.7815908193588257,
+    "test/lpips": 0.0
+  }
+}

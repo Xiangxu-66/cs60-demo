@@ -1,0 +1,98 @@
+{
+  "experiment_name": "v12_split_dinov3_1600e100",
+  "encoder": "unknown",
+  "bottleneck": "src.models.bottlenecks.versions.v12_split.RWKVCNNSplitBottleneckV12",
+  "metrics": {
+    "test/loss": 0.10300596058368683,
+    "test/loss_l1": 0.052424464374780655,
+    "test/loss_ssim": 0.03899854049086571,
+    "test/loss_perceptual": 0.011582962237298489,
+    "test/psnr": 20.41522979736328,
+    "test/ssim": 0.8050073385238647,
+    "test/lpips": 0.125278502702713
+  },
+  "summary": {
+    "experiment_name": "v12_split_dinov3_1600e100",
+    "epoch": 28,
+    "global_step": 2800,
+    "model": {
+      "encoder": "unknown",
+      "encoder_target": "src.models.encoders.dinov3.DINOv3Encoder",
+      "bottleneck_target": "src.models.bottlenecks.versions.v12_split.RWKVCNNSplitBottleneckV12",
+      "decoder_target": "src.models.decoders.cnn_decoder.CNNDecoder"
+    },
+    "training": {
+      "max_epochs": 100,
+      "init_from_checkpoint": null,
+      "resume_from_checkpoint": null,
+      "batch_size": 16,
+      "num_workers": 4,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "scheduler": "cosine",
+      "warmup_epochs": 5,
+      "early_stopping": {
+        "patience": 15,
+        "monitor": "val/psnr",
+        "mode": "max"
+      },
+      "gradient_clip_val": 1.0
+    },
+    "data": {
+      "data_dir": "data/fivek",
+      "expert": "C",
+      "batch_size": 16,
+      "image_size": 480,
+      "crop_size": 256,
+      "train_subset_size": 1600,
+      "val_subset_size": 200,
+      "test_subset_size": 200
+    },
+    "loss": {
+      "_target_": "src.losses.combined_loss.CombinedLoss",
+      "components": {
+        "l1": {
+          "_target_": "src.losses.l1_loss.L1Loss",
+          "weight": 0.6
+        },
+        "ssim": {
+          "_target_": "src.losses.ssim_loss.SSIMLoss",
+          "weight": 0.2,
+          "window_size": 11
+        },
+        "perceptual": {
+          "_target_": "src.losses.perceptual_loss.PerceptualLoss",
+          "weight": 0.01,
+          "layers": [
+            "relu1_2",
+            "relu2_2",
+            "relu3_3"
+          ]
+        }
+      }
+    },
+    "artifacts": {
+      "config_yaml": "outputs/logs/v12_split_dinov3_1600e100/config/config.yaml",
+      "config_json": "outputs/logs/v12_split_dinov3_1600e100/config/config.json",
+      "figures_dir": "outputs/figures/v12_split_dinov3_1600e100",
+      "eval_dir": "outputs/eval/v12_split_dinov3_1600e100",
+      "test_comparison": "outputs/eval/v12_split_dinov3_1600e100/test_comparison.png"
+    },
+    "logged_metrics": {
+      "test/loss": 0.10300596058368683,
+      "test/loss_l1": 0.052424464374780655,
+      "test/loss_ssim": 0.03899854049086571,
+      "test/loss_perceptual": 0.011582962237298489,
+      "test/psnr": 20.41522979736328,
+      "test/ssim": 0.8050073385238647,
+      "test/lpips": 0.125278502702713
+    },
+    "checkpoint": {
+      "best_model_path": "/home/user/CS60-1/outputs/checkpoints/v12_split_dinov3_1600e100_epoch=012-val/psnr=19.05.ckpt",
+      "best_model_score": 19.046781539916992,
+      "monitor": "val/psnr",
+      "mode": "max",
+      "save_top_k": 3
+    }
+  }
+}

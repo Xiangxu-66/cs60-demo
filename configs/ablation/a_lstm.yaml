@@ -1,0 +1,8 @@
+# @package _global_
+# A-lstm: Bi-LSTM bottleneck (sequence model comparison)
+# Verifies: why RWKV over Bi-LSTM
+bottleneck:
+  _target_: src.models.bottlenecks.lstm_bottleneck.BiLSTMBottleneck
+  hidden_dim: 384
+  num_layers: 3
+  drop_rate: 0.1

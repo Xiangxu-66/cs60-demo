@@ -1,0 +1,5 @@
+# vRWKV bottleneck (2D recurrent spatial mixer, O(N))
+_target_: src.models.bottlenecks.vrwkv_bottleneck.VRWKVBottleneck
+hidden_dim: 256
+num_layers: 4
+drop_rate: 0.1

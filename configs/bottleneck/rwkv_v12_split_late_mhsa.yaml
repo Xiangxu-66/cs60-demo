@@ -1,0 +1,12 @@
+# V12-lite + Late MHSA on the last bottleneck blocks
+_target_: src.models.bottlenecks.versions.v12_split_late_mhsa.RWKVCNNSplitLateMHSABottleneckV12
+hidden_dim: 384
+num_layers: 6
+rwkv_ratio: 0.3333333333
+rwkv_channel_expansion: 2
+kernel_size: 3
+num_late_attention_blocks: 2
+mhsa_num_heads: 6
+mhsa_mlp_ratio: 2.0
+drop_rate: 0.1
+layer_scale_init: 1.0e-4

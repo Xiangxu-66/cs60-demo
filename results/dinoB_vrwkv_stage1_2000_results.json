@@ -1,0 +1,14 @@
+{
+  "experiment_name": "dinoB_vrwkv_stage1_2000",
+  "encoder": "vit_base_patch14_dinov2",
+  "bottleneck": "src.models.bottlenecks.vrwkv_bottleneck.VRWKVBottleneck",
+  "metrics": {
+    "test/loss": 0.10766590386629105,
+    "test/loss_l1": 0.05827249959111214,
+    "test/loss_ssim": 0.03796699270606041,
+    "test/loss_perceptual": 0.011426402255892754,
+    "test/psnr": 19.793298721313477,
+    "test/ssim": 0.8101649284362793,
+    "test/lpips": 0.11383340507745743
+  }
+}

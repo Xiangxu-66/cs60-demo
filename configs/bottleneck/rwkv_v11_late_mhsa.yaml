@@ -1,0 +1,11 @@
+# V11 backbone with late-stage MHSA for higher PSNR.
+_target_: src.models.bottlenecks.versions.v11_late_mhsa.RWKVBottleneckV11LateMHSA
+
+hidden_dim: 384
+num_layers: 6
+drop_path: 0.0
+drop_rate: 0.1
+num_late_attention_blocks: 2
+mhsa_num_heads: 6
+mhsa_mlp_ratio: 2.0
+layer_scale_init: 1.0e-4

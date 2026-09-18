@@ -1,0 +1,10 @@
+# V12: parameter-efficient split bottleneck
+# Small RWKV branch for long-range mixing + larger CNN branch for local detail.
+_target_: src.models.bottlenecks.versions.v12_split.RWKVCNNSplitBottleneckV12
+hidden_dim: 384
+num_layers: 6
+rwkv_ratio: 0.3333333333
+rwkv_channel_expansion: 2
+kernel_size: 3
+drop_rate: 0.1
+layer_scale_init: 1.0e-4

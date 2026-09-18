@@ -1,0 +1,31 @@
+# @package _global_
+# V1 baseline upgraded with VRWKV-inspired stable training defaults.
+bottleneck:
+  _target_: src.models.bottlenecks.versions.v1_2d.RWKVBottleneckV1
+  hidden_dim: 384
+  num_layers: 6
+  drop_rate: 0.0
+  shift_pixel: 1
+  channel_gamma: 0.25
+  hidden_rate: 4
+  key_norm: true
+  bidirectional: true
+  layer_scale_init: 1.0e-4
+
+loss:
+  _target_: src.losses.combined_loss.CombinedLoss
+  components:
+    l1:
+      _target_: src.losses.l1_loss.L1Loss
+      weight: 1.0
+    ssim: null
+    perceptual: null
+
+training:
+  max_epochs: 100
+  early_stopping:
+    patience: 15
+
+logging:
+  log_grad_flow: true
+  grad_flow_log_every_n_steps: 10

@@ -1,0 +1,11 @@
+name: rwkv-color
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+    - torch==2.7.*
+    - torchvision==0.22.*
+    - -e "..[dev]"

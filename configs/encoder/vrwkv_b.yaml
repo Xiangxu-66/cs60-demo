@@ -1,0 +1,8 @@
+# E-3: VRWKV-B (RWKV-native encoder)
+_target_: src.models.encoders.vrwkv_encoder.VRWKVEncoder
+name: "vrwkv_base"
+pretrained: false
+frozen: true
+patch_size: 16
+embed_dim: 512
+n_layer: 12

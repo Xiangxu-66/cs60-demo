@@ -1,0 +1,12 @@
+defaults:
+  - base
+  - encoder: dinov3_b
+  - bottleneck: rwkv_v12_split
+  - decoder: cnn
+  - loss: stage1
+  - data: fivek_dinov3
+  - optional ablation: null
+  - _self_
+
+experiment_name: "v12_split_dinov3"
+seed: 42

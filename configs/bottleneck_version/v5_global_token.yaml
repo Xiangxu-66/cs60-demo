@@ -1,0 +1,13 @@
+# V5: + Global color token (O(N) preserved, k constant tokens)
+# Problem solved: RWKV lacks global color tone consistency awareness
+# Source: ViT CLS Token concept, adapted for linear recurrence
+bottleneck:
+  _target_: src.models.bottlenecks.versions.v5_global_token.RWKVBottleneckV5
+  hidden_dim: 384
+  num_layers: 6
+  drop_rate: 0.1
+  hsv_sort_key: "hue"
+  fine_scale: 1
+  coarse_scale: 4
+  cla_num_heads: 4
+  num_global_tokens: 4

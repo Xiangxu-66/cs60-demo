@@ -1,0 +1,68 @@
+{
+  "experiment_name": "summary_smoke",
+  "encoder": "vit_base_patch14_dinov2",
+  "bottleneck": "src.models.bottlenecks.rwkv_bottleneck.RWKVBottleneckV1",
+  "metrics": {
+    "test/loss": 0.33144327998161316,
+    "test/loss_l1": 0.33144327998161316,
+    "test/psnr": 7.831084728240967,
+    "test/ssim": 0.08096298575401306,
+    "test/lpips": 0.0
+  },
+  "summary": {
+    "experiment_name": "summary_smoke",
+    "epoch": 1,
+    "global_step": 1,
+    "model": {
+      "encoder": "vit_base_patch14_dinov2",
+      "encoder_target": "src.models.encoders.dinov2.DINOv2Encoder",
+      "bottleneck_target": "src.models.bottlenecks.rwkv_bottleneck.RWKVBottleneckV1",
+      "decoder_target": "src.models.decoders.cnn_decoder.CNNDecoder"
+    },
+    "training": {
+      "max_epochs": 1,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "scheduler": "cosine",
+      "gradient_clip_val": 1.0,
+      "early_stopping": {
+        "patience": 1,
+        "monitor": "val/psnr",
+        "mode": "max"
+      }
+    },
+    "data": {
+      "data_dir": "dummy",
+      "expert": "C",
+      "batch_size": 2,
+      "image_size": 56,
+      "crop_size": 56,
+      "train_subset_size": 4,
+      "val_subset_size": 4,
+      "test_subset_size": 4
+    },
+    "loss": {
+      "_target_": "src.losses.combined_loss.CombinedLoss",
+      "components": {
+        "l1": {
+          "_target_": "src.losses.l1_loss.L1Loss",
+          "weight": 1.0
+        }
+      }
+    },
+    "artifacts": {
+      "config_yaml": "outputs/logs/summary_smoke/config/config.yaml",
+      "config_json": "outputs/logs/summary_smoke/config/config.json",
+      "figures_dir": "outputs/figures/summary_smoke",
+      "eval_dir": "outputs/eval/summary_smoke",
+      "test_comparison": "outputs/eval/summary_smoke/test_comparison.png"
+    },
+    "logged_metrics": {
+      "test/loss": 0.33144327998161316,
+      "test/loss_l1": 0.33144327998161316,
+      "test/psnr": 7.831084728240967,
+      "test/ssim": 0.08096298575401306,
+      "test/lpips": 0.0
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "experiment_name": "smoke_stage1_no_lpips",
+  "encoder": "vit_base_patch14_dinov2",
+  "bottleneck": "src.models.bottlenecks.cnn_bottleneck.CNNBottleneck",
+  "metrics": {
+    "test/loss": 0.3112030029296875,
+    "test/psnr": 11.745634078979492,
+    "test/ssim": 0.36058294773101807,
+    "test/lpips": 0.0
+  }
+}

@@ -1,0 +1,11 @@
+# @package _global_
+# A-loss: Pure L1 only.
+# Keeps the Stage 1 baseline's L1 coefficient and removes all auxiliary terms.
+loss:
+  _target_: src.losses.combined_loss.CombinedLoss
+  components:
+    l1:
+      _target_: src.losses.l1_loss.L1Loss
+      weight: 1.0
+    ssim: null
+    perceptual: null

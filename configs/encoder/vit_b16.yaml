@@ -1,0 +1,7 @@
+# E-1: ViT-B/16 (general vision baseline)
+_target_: src.models.encoders.vit.ViTEncoder
+name: "vit_base_patch16_224"
+pretrained: true
+frozen: true
+patch_size: 16
+embed_dim: 768

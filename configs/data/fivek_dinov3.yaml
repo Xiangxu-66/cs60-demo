@@ -1,0 +1,22 @@
+# MIT-Adobe FiveK dataset preset for 16x16 patch encoders like DINOv3-B.
+# Set DATA_DIR env var or use default symlink at data/fivek
+_target_: src.data.fivek_dataset.FiveKDataModule
+data_dir: "${oc.env:DATA_DIR,data/fivek}"
+expert: "C"
+train_ratio: 0.8
+val_ratio: 0.1
+test_ratio: 0.1
+train_split: null
+val_split: null
+test_split: null
+train_subset_size: null
+val_subset_size: null
+test_subset_size: null
+image_size: 480
+crop_size: 256
+normalize_to_neg_one_one: true
+overfit_on_train_subset: false
+use_augmentation: true
+num_workers: 4
+batch_size: 16
+pin_memory: true

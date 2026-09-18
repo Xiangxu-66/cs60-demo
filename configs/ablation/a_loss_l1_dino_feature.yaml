@@ -1,0 +1,17 @@
+# @package _global_
+# A-loss: L1 + DINOv3 patch-token feature loss.
+# Built directly on top of the teammate DINOv3 + L1-only recipe so the
+# comparison isolates the effect of adding dense-feature supervision.
+loss:
+  _target_: src.losses.combined_loss.CombinedLoss
+  components:
+    l1:
+      _target_: src.losses.l1_loss.L1Loss
+      weight: 1.0
+    ssim: null
+    perceptual: null
+    dino_feature:
+      _target_: src.losses.dino_feature_loss.DINOFeatureLoss
+      weight: 0.01
+      model_name: "facebook/dinov3-vitb16-pretrain-lvd1689m"
+      patch_size: 16

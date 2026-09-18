@@ -1,0 +1,98 @@
+{
+  "experiment_name": "v12_split_late_mhsa_dinov3_1600e100",
+  "encoder": "unknown",
+  "bottleneck": "src.models.bottlenecks.versions.v12_split_late_mhsa.RWKVCNNSplitLateMHSABottleneckV12",
+  "metrics": {
+    "test/loss": 0.09826833754777908,
+    "test/loss_l1": 0.0499751940369606,
+    "test/loss_ssim": 0.037097081542015076,
+    "test/loss_perceptual": 0.011196054518222809,
+    "test/psnr": 20.86017417907715,
+    "test/ssim": 0.8145146369934082,
+    "test/lpips": 0.10308585315942764
+  },
+  "summary": {
+    "experiment_name": "v12_split_late_mhsa_dinov3_1600e100",
+    "epoch": 47,
+    "global_step": 4700,
+    "model": {
+      "encoder": "unknown",
+      "encoder_target": "src.models.encoders.dinov3.DINOv3Encoder",
+      "bottleneck_target": "src.models.bottlenecks.versions.v12_split_late_mhsa.RWKVCNNSplitLateMHSABottleneckV12",
+      "decoder_target": "src.models.decoders.cnn_decoder.CNNDecoder"
+    },
+    "training": {
+      "max_epochs": 100,
+      "init_from_checkpoint": null,
+      "resume_from_checkpoint": null,
+      "batch_size": 16,
+      "num_workers": 4,
+      "learning_rate": 0.0001,
+      "weight_decay": 0.0001,
+      "scheduler": "cosine",
+      "warmup_epochs": 5,
+      "early_stopping": {
+        "patience": 15,
+        "monitor": "val/psnr",
+        "mode": "max"
+      },
+      "gradient_clip_val": 1.0
+    },
+    "data": {
+      "data_dir": "data/fivek",
+      "expert": "C",
+      "batch_size": 16,
+      "image_size": 480,
+      "crop_size": 256,
+      "train_subset_size": 1600,
+      "val_subset_size": 200,
+      "test_subset_size": 200
+    },
+    "loss": {
+      "_target_": "src.losses.combined_loss.CombinedLoss",
+      "components": {
+        "l1": {
+          "_target_": "src.losses.l1_loss.L1Loss",
+          "weight": 0.6
+        },
+        "ssim": {
+          "_target_": "src.losses.ssim_loss.SSIMLoss",
+          "weight": 0.2,
+          "window_size": 11
+        },
+        "perceptual": {
+          "_target_": "src.losses.perceptual_loss.PerceptualLoss",
+          "weight": 0.01,
+          "layers": [
+            "relu1_2",
+            "relu2_2",
+            "relu3_3"
+          ]
+        }
+      }
+    },
+    "artifacts": {
+      "config_yaml": "outputs/logs/v12_split_late_mhsa_dinov3_1600e100/config/config.yaml",
+      "config_json": "outputs/logs/v12_split_late_mhsa_dinov3_1600e100/config/config.json",
+      "figures_dir": "outputs/figures/v12_split_late_mhsa_dinov3_1600e100",
+      "eval_dir": "outputs/eval/v12_split_late_mhsa_dinov3_1600e100",
+      "test_comparison": "outputs/eval/v12_split_late_mhsa_dinov3_1600e100/test_comparison.png"
+    },
+    "logged_metrics": {
+      "test/loss": 0.09826833754777908,
+      "test/loss_l1": 0.0499751940369606,
+      "test/loss_ssim": 0.037097081542015076,
+      "test/loss_perceptual": 0.011196054518222809,
+      "test/psnr": 20.86017417907715,
+      "test/ssim": 0.8145146369934082,
+      "test/lpips": 0.10308585315942764
+    },
+    "checkpoint": {
+      "best_model_path": "/home/user/CS60-1/outputs/checkpoints/v12_split_late_mhsa_dinov3_1600e100_epoch=031-val/psnr=19.57.ckpt",
+      "best_model_score": 19.570703506469727,
+      "monitor": "val/psnr",
+      "mode": "max",
+      "save_top_k": 3
+    }
+  }
+}

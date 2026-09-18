@@ -1,0 +1,14 @@
+{
+  "experiment_name": "dinoB_vrwkv_cnn_smoke_v3",
+  "encoder": "vit_base_patch14_dinov2",
+  "bottleneck": "src.models.bottlenecks.vrwkv_bottleneck.VRWKVBottleneck",
+  "metrics": {
+    "test/loss": NaN,
+    "test/loss_l1": NaN,
+    "test/loss_ssim": NaN,
+    "test/loss_perceptual": 0.02631031908094883,
+    "test/psnr": NaN,
+    "test/ssim": NaN,
+    "test/lpips": 0.7931468486785889
+  }
+}
