@@ -1,0 +1,36 @@
+# MIT-Adobe FiveK dataset
+# Set DATA_DIR env var or use default symlink at data/fivek
+_target_: src.data.fivek_dataset.FiveKDataModule
+data_dir: "${oc.env:DATA_DIR,data/fivek}"
+expert: "C"
+# Flexible split ratios. Defaults to train / val / test = 80 / 10 / 10.
+train_ratio: 0.8
+val_ratio: 0.1
+test_ratio: 0.1
+# Preferred subset-size knobs for quick experiments, e.g.:
+#   data.train_subset_size=2000
+#   data.val_subset_size=100
+#   data.test_subset_size=100
+train_subset_size: null
+val_subset_size: null
+test_subset_size: null
+# Split source:
+# - files_or_ratio: use configs/splits/five/*.txt when it matches the dataset,
+#   then data_dir/splits/*.txt if present, else ratio fallback.
+# - sorted_4000_500_500: first 4000 train, next 500 val, last 500 test.
+split_mode: "files_or_ratio"
+image_size: 480
+crop_size: 480
+train_crop_mode: "fixed"
+ratio_crop_min_scale: 0.6
+ratio_crop_max_scale: 1.0
+normalize_to_neg_one_one: true
+overfit_on_train_subset: false
+merge_train_val_for_final_fit: false
+use_val_split: true
+use_augmentation: true
+eval_resize_mode: "square"
+pad_to_multiple: 16
+num_workers: 4
+batch_size: ${training.batch_size_per_device}
+pin_memory: true
