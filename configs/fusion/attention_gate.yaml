@@ -1,0 +1,8 @@
+# @package _global_
+# Fusion preset: attention gate fusion at every fusion position.
+# See configs/fusion/concat.yaml for what each key controls.
+
+fusion_mode: "attention_gate"
+decoder:
+  skip_fusion_mode: "attention_gate"
+  img_skip_fusion_mode: "attention_gate"

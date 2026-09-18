@@ -1,0 +1,6 @@
+# @package _global_
+# Single-variable bottleneck ablation: use phase-2 visual-enhanced RWKV-7.
+
+defaults:
+  - override /bottleneck: rwkv7_vision
+

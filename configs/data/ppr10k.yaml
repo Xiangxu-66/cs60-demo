@@ -1,0 +1,10 @@
+# PPR10K dataset (reserved for future experiments)
+_target_: src.data.ppr10k_dataset.PPR10KDataModule
+data_dir: "${oc.env:DATA_DIR,data/ppr10k}"
+target_type: "a"
+image_size: 480
+crop_size: 480
+use_augmentation: true
+num_workers: 4
+batch_size: ${training.batch_size_per_device}
+pin_memory: true

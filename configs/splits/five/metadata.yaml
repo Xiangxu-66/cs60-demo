@@ -1,0 +1,26 @@
+total_images: 5000
+train_size: 4000
+val_size: 500
+test_size: 500
+train_samples:
+- a2535-IMG_5055
+- a0791-050801_081022__I2E5520
+- a0825-_MG_7225
+- a1682-DSC_0010-4
+- a4494-Duggan_081010_1923
+val_samples:
+- a3555-kme_502
+- a1169-kme_419
+- a0636-07-11-27-at-10h02m30s-_MG_7226
+- a0858-_DSC0018
+- a3710-07-11-20-at-16h52m05s-_MG_5742
+test_samples:
+- a4501-DSC_0354
+- a4502-Duggan_090116_4368
+- a4503-kme_0411
+- a4504-_DGW7893
+- a4505-DSC_0086
+split_strategy: fixed_test_from_file
+seed: 42
+explicit_test_size: 500
+test_list_path: configs/splits/five/test.txt

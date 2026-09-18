@@ -1,0 +1,40 @@
+# ColorNAF Encoder: NAFNet-style encoder for color enhancement
+#
+# Features:
+# - Multi-colorspace input (RGB + Lab)
+# - GRN (Global Response Normalization) for channel competition modeling
+# - SimpleGate for efficient feature gating
+# - Soft Histogram Token for global color statistics
+# - Multi-scale skip connections (stage 0, 1, 2)
+# - Semi-frozen training strategy (stage 0/1 frozen)
+
+_target_: src.models.encoders.color_naf.ColorNAFEncoder
+
+# Input configuration
+input_mode: "rgb_lab"  # rgb, rgb_lab, rgb_lab_hsv
+in_channels: 6         # Fallback only; input_mode usually sets 3 / 6 / 5 channels automatically
+
+# Architecture
+base_channels: 64
+num_stages: 4
+channels: [64, 64, 128, 128]  # Channels per stage
+
+# Skip connection
+skip_stages: [0, 1, 2]  # Which stages to output for skip connections
+# stage0: (B, 64, H/2, W/2) - shallow features
+# stage1: (B, 64, H/4, W/4) - mid-level features
+# stage2: (B, 128, H/8, W/8) - deep features
+
+# Semi-frozen training strategy
+frozen_stages: [0, 1]  # Freeze stem + first internal stage; later stages remain trainable
+                       # Set to [] for fully trainable, or [0, 1, 2] for more frozen
+
+# Histogram token (global color statistics)
+histogram_bins: 8     # Number of bins per channel (8 bins × 3 channels = 24 dim)
+token_dim: 128        # Output token dimension
+
+# Notes:
+# - This encoder returns (tokens, skip_dict) where tokens include a prepended histogram token
+# - Skip format: {"color_naf": {"stage0": ..., "stage1": ..., "stage2": ...}}
+# - stage2 corresponds to the final H/8 feature map (128ch with the default channel config)
+# - The pipeline aligns H/8 spatial tokens to the DINO grid and injects the histogram token as global conditioning

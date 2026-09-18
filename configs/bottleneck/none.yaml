@@ -1,0 +1,3 @@
+# B-0: No bottleneck — direct pass-through (lower bound)
+_target_: src.models.bottlenecks.none_bottleneck.NoneBottleneck
+hidden_dim: 384

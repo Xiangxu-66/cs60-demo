@@ -1,0 +1,15 @@
+# @package _global_
+
+# Fixed full FiveK protocol:
+# - use configs/splits/five/{train,val,test}.txt
+# - "5000" refers to the full fixed pool: 4000 train + 500 val + 500 test
+
+experiment_name_suffix: "_train5000"
+
+data:
+  split_mode: "files_or_ratio"
+  train_subset_size: null
+  val_subset_size: null
+  test_subset_size: null
+  merge_train_val_for_final_fit: false
+  use_val_split: true

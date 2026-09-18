@@ -1,0 +1,15 @@
+# @package _global_
+# V6 ★: + Selective color decay (content-dependent WKV decay rates)
+# Problem solved: Fixed decay cannot distinguish different color regions
+# Source: Mamba selective SSM mechanism
+bottleneck:
+  _target_: src.models.bottlenecks.versions.v6_selective_decay.RWKVBottleneckV6
+  hidden_dim: 384
+  num_layers: 6
+  drop_rate: 0.1
+  hsv_sort_key: "hue"
+  fine_scale: 1
+  coarse_scale: 4
+  cla_num_heads: 4
+  num_global_tokens: 4
+  decay_predictor_hidden: 64

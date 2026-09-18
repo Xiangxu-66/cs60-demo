@@ -1,0 +1,19 @@
+# Shallow CNN Encoder for multi-scale local texture extraction
+#
+# This encoder complements DINOv3 by extracting low-level texture details:
+# - Edge information
+# - Local texture patterns
+# - Color and exposure details
+_target_: src.models.encoders.shallow_cnn.ShallowCNNEncoder
+
+# Input channels (3 for RGB)
+in_channels: 3
+
+# Base channel count
+base_channels: 32
+
+# Number of stages (each stage extracts features at a different scale)
+num_stages: 3
+
+# Output channels (unified for all stages for easy fusion)
+output_channels: 64

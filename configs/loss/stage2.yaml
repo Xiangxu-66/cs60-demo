@@ -1,0 +1,16 @@
+# Stage 2 loss: pixel-level + aesthetic quality (NIMA)
+_target_: src.losses.combined_loss.CombinedLoss
+components:
+  l1:
+    _target_: src.losses.l1_loss.L1Loss
+    weight: 1.0
+  ssim:
+    _target_: src.losses.ssim_loss.SSIMLoss
+    weight: 0.1
+    window_size: 11
+  lpips:
+    _target_: src.losses.lpips_loss.LPIPSLoss
+    weight: 0.01
+  nima:
+    _target_: src.losses.nima_loss.NIMALoss
+    weight: 0.05

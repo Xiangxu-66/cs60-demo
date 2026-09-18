@@ -1,0 +1,12 @@
+{
+  "experiment_name": "dinov3_2000img",
+  "encoder": "unknown",
+  "bottleneck": "src.models.bottlenecks.cnn_bottleneck.CNNBottleneck",
+  "metrics": {
+    "test/loss": 0.08270559459924698,
+    "test/loss_l1": 0.08270559459924698,
+    "test/psnr": 20.691627502441406,
+    "test/ssim": 0.8026358485221863,
+    "test/lpips": 0.12600177526474
+  }
+}

@@ -1,0 +1,25 @@
+# RWKV Bottleneck V11 - Mamba-free replacement for V10
+#
+# This version replaces V10's DSSM (which requires mamba_ssm) with
+# quad-directional RWKV recurrence.
+#
+# Architecture:
+#   Part 1: Quad-Directional RWKV (4-way spatial recurrence)
+#     - Forward H×W (horizontal left→right, top→bottom)
+#     - Forward W×H (vertical top→bottom, left→right) transposed
+#     - Backward H×W (reverse horizontal)
+#     - Backward W×H (reverse vertical transposed)
+#
+#   Part 2: VRSE module (from V9)
+#     - BidirectionalRWKVTimeMix (H ↔ W spatial recurrence + OSRM)
+#     - EnhancedChannelMix (OSRM + Squared ReLU activation)
+#
+# This provides the same directional coverage as DSSM without mamba_ssm.
+#
+# Reference: DyRSRNet (PRCV'25 Oral)
+_target_: src.models.bottlenecks.versions.v11_quad_rwkv.RWKVBottleneckV11
+
+hidden_dim: 384
+num_layers: 6
+drop_path: 0.0
+drop_rate: 0.1

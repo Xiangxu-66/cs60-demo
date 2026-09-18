@@ -1,0 +1,18 @@
+# Stage 1 variant B: replace VGG perceptual with MS-SWC
+# Tests whether MS-SWC can substitute VGG perceptual loss (same slot, same weight)
+_target_: src.losses.combined_loss.CombinedLoss
+components:
+  l1:
+    _target_: src.losses.l1_loss.L1Loss
+    weight: 1.0
+  ssim:
+    _target_: src.losses.ssim_loss.SSIMLoss
+    weight: 0.1
+    window_size: 11
+  ms_swc:
+    _target_: src.losses.ms_swc_loss.MSSWCLoss
+    weight: 0.01
+    num_scales: 5
+    num_projections: 128
+    pyr_sigma: 1.0
+    pyr_ksize: 5

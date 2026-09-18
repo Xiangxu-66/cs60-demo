@@ -1,0 +1,15 @@
+# RWKV Bottleneck V9 - Full DyRSRNet Integration (V7 + V8 Combined)
+#
+# This version combines all DyRSRNet enhancements:
+# 1. TimeMix: Bidirectional RWKV + OSRM (from V8)
+# 2. FFN: EnhancedChannelMix with OSRM + Squared ReLU (from V7)
+#
+# This is the most complete DyRSRNet integration, fully aligning with
+# DyRSRNet's RCSSblock architecture.
+#
+# Reference: DyRSRNet (PRCV'25 Oral)
+_target_: src.models.bottlenecks.versions.v9_full.RWKVBottleneckV9
+
+hidden_dim: 384
+num_layers: 6
+drop_rate: 0.1

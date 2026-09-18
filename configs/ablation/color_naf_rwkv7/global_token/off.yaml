@@ -1,0 +1,7 @@
+# @package _global_
+# Family-specific ablation: drop the prepended histogram/global token.
+# Encoder returns only spatial tokens; FiLM (if enabled) silently no-ops
+# because hist_token will be None downstream.
+
+cnn_encoder:
+  use_global_token: false

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>周报 — MS-SWC Loss 介绍</title>
+<style>
+  @page { size: A4; margin: 1.8cm 2cm; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "PingFang SC", "STHeiti", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+    color: #222;
+    line-height: 1.6;
+    font-size: 11pt;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  h1 { font-size: 20pt; margin: 0 0 .2em 0; border-bottom: 3px solid #2a5d9f; padding-bottom: .3em; }
+  h1 + .sub { color: #666; font-size: 10.5pt; margin-bottom: 1.4em; }
+  h2 { font-size: 14pt; color: #2a5d9f; margin-top: 1.7em; margin-bottom: .5em;
+       border-left: 4px solid #2a5d9f; padding-left: .6em; }
+  h3 { font-size: 12pt; margin-top: 1.1em; margin-bottom: .3em; color: #444; }
+  p { margin: .4em 0; }
+  ul, ol { margin: .3em 0 .5em 0; padding-left: 1.4em; }
+  li { margin: .2em 0; }
+  code { font-family: "SF Mono", "Menlo", monospace; font-size: 9.5pt;
+         background: #f3f3f5; padding: 1px 4px; border-radius: 3px; }
+  pre { background: #f6f8fa; border: 1px solid #e1e4e8; border-radius: 5px;
+        padding: .7em .9em; font-size: 9.5pt; overflow-x: auto; line-height: 1.4; }
+  table { border-collapse: collapse; width: 100%; margin: .5em 0 .8em 0; font-size: 10pt; }
+  th, td { border: 1px solid #d0d0d6; padding: 6px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f8; font-weight: 600; }
+  tr:nth-child(even) td { background: #fafbfc; }
+  .callout { border-left: 4px solid #2a5d9f; background: #eef4fb;
+             padding: .6em .9em; margin: .9em 0; border-radius: 0 4px 4px 0; font-size: 10.5pt; }
+  .callout.warn { border-color: #f0ad4e; background: #fff9e6; }
+  .formula { background: #fafbfc; border: 1px solid #e1e4e8; border-radius: 5px;
+             padding: .7em 1em; margin: .6em 0; font-family: "SF Mono", "Menlo", monospace;
+             font-size: 10pt; line-height: 1.7; }
+  .pipeline { display: flex; justify-content: space-between; align-items: center;
+              text-align: center; margin: 1em 0; font-size: 10pt; }
+  .pipeline .step { flex: 1; padding: .5em .3em; background: #eef4fb;
+                    border: 1px solid #cfdef5; border-radius: 6px; margin: 0 3px; }
+  .pipeline .arrow { color: #2a5d9f; font-weight: 700; font-size: 14pt; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.2em; }
+  .meta { color: #777; font-size: 9.5pt; }
+  hr { border: none; border-top: 1px dashed #ccc; margin: 1.6em 0; }
+  .highlight { background: #fffae6; padding: 1px 4px; border-radius: 2px; }
+  @media print { h2 { page-break-after: avoid; } table { page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<h1>MS-SWC Loss — 新 Loss 函数介绍</h1>
+<div class="sub">CS60-1 FiveK 色彩美学增强 &nbsp;|&nbsp; 本周新增实验 loss &nbsp;|&nbsp; 2026-04-22</div>
+
+<div class="callout">
+<b>一句话总结</b>：把图像转到 CIELAB 色彩空间、建多尺度金字塔，用<b>切片 Wasserstein 距离</b>对齐预测图和目标图的<b>色彩分布</b> —— 让模型学的不只是"每个像素的值"，而是"整体色调的感觉"。
+</div>
+
+<h2>1. 我们解决什么问题</h2>
+<p>项目本质是<b>色彩美学增强（Color Retouching）</b>：把相机 raw 图变成专家 C 调过的美学风格图。当前训练 loss 是：</p>
+<div class="formula">L_total = 0.6 · L1 &nbsp;+&nbsp; 0.2 · (1 − SSIM) &nbsp;+&nbsp; 0.01 · VGG_Perceptual</div>
+<p>三个 loss 各有所管：L1 盯每个像素的值，SSIM 盯局部结构，VGG perceptual 盯 ImageNet 特征空间的语义。但 <span class="highlight">没有一个直接建模"色彩分布"这件事</span> —— 而 retouching 的核心恰恰是色调、白平衡、饱和度这些全局色彩统计量。</p>
+
+<h2>2. MS-SWC 核心思想</h2>
+<p>MS-SWC = <b>M</b>ultiscale <b>S</b>liced-<b>W</b>asserstein <b>C</b>ontrastive，基于 ECCV 2024 的 MS-SWD。三步走：</p>
+
+<div class="pipeline">
+  <div class="step"><b>① 色彩空间</b><br>RGB → CIELAB<br><span class="meta">感知均匀空间</span></div>
+  <div class="arrow">→</div>
+  <div class="step"><b>② 多尺度</b><br>Gaussian 金字塔<br><span class="meta">5 个尺度</span></div>
+  <div class="arrow">→</div>
+  <div class="step"><b>③ 分布对齐</b><br>Sliced Wasserstein<br><span class="meta">128 随机投影</span></div>
+</div>
+
+<h3>① 为什么用 CIELAB 空间</h3>
+<p>sRGB 是显示空间，欧氏距离 ≠ 人眼色差。CIELAB 是 1976 年 CIE 为"感知均匀"设计的色彩空间：L 代表亮度（0–100），a 代表红绿轴，b 代表蓝黄轴。<b>在 LAB 里算距离 ≈ 人眼感受到的色差</b>。所以把像素转到 LAB 再比较，比在 RGB 里算 L1 更贴近任务目标。</p>
+
+<h3>② 为什么要多尺度金字塔</h3>
+<p>单一尺度只能看到像素级色差。多尺度（下采样 + 高斯模糊）后，每一层代表不同空间粒度的色彩统计：<b>高层看整体色调，底层看局部色彩细节</b>。5 个尺度求平均 = 同时约束全局和局部色彩。</p>
+
+<h3>③ 为什么用 Sliced Wasserstein 距离</h3>
+<p>把每个尺度的图像看成"一袋 LAB 色彩向量"（忽略空间位置），SWD 衡量两袋分布之间的<b>最优传输成本</b> —— 直观讲就是"把源分布的色彩'搬运'成目标分布要花多少代价"。</p>
+<p>直接算高维 Wasserstein 很贵（传统方法 O(N³)）。<b>Sliced</b> 版本的巧思：</p>
+<ol>
+<li>在 LAB 的 3 维单位球上随机采 128 个方向 <code>θ</code></li>
+<li>把每袋色彩向量沿 <code>θ</code> 投影成 1D 标量</li>
+<li>1D 情况下，W1 距离 = 排序后对应位置做 L1 差</li>
+<li>128 个方向求平均，作为最终 SWD 值</li>
+</ol>
+<p>复杂度降到 <b>O(K · N log N)</b>，完全可微，可直接反传梯度。</p>
+
+<h2>3. 算法公式</h2>
+<p>给定预测图 ŷ、目标图 y，分别转 LAB 并构建金字塔后，单尺度的 SWD 定义为：</p>
+<div class="formula">
+SWD(P, Q) &nbsp;=&nbsp; (1/K) · Σ<sub>k=1..K</sub> &nbsp; W<sub>1</sub>( sort(θ<sub>k</sub><sup>T</sup>P), sort(θ<sub>k</sub><sup>T</sup>Q) )<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 其中 &nbsp; θ<sub>k</sub> ∼ Uniform(S<sup>2</sup>), &nbsp; K = 128
+</div>
+<p>多尺度上再取平均得到最终 loss：</p>
+<div class="formula">
+L<sub>MS-SWC</sub>(ŷ, y) &nbsp;=&nbsp; (1/S) · Σ<sub>s=1..S</sub> &nbsp; SWD( Pyr<sub>s</sub>(LAB(ŷ)), &nbsp; Pyr<sub>s</sub>(LAB(y)) ), &nbsp;&nbsp; S = 5
+</div>
+
+<h2>4. 为什么我们认为它管用</h2>
+<div class="grid2">
+<div>
+<h3>贴任务本质</h3>
+<ul>
+<li>任务是色调重塑 → LAB 空间直接建模</li>
+<li>retouching 的关键是全局色彩统计 → 分布距离天然对齐</li>
+<li>SWD 对"颜色应该出现多少"敏感，不纠结"在具体哪个位置"</li>
+</ul>
+</div>
+<div>
+<h3>弥补现有 loss 空白</h3>
+<ul>
+<li>L1 / SSIM 只管像素位置，不管色域统计</li>
+<li>VGG perceptual 是 ImageNet 语义特征，和颜色关系弱</li>
+<li>MS-SWC 直接填上"色彩分布"这个维度</li>
+</ul>
+</div>
+</div>
+
+<div class="callout warn">
+<b>它有个天然局限 —— 也正是我们的切入点</b><br>
+因为 SWD 忽略空间位置，单独用会损失像素级精度（预计 PSNR 下降 1–3 dB）。所以<b>它不会替代 L1/SSIM，而是作为第三维补充</b>。最终 stage 配方会是 <code>L1 + SSIM + MS-SWC</code> 三维互补。
+</div>
+
+<h2>5. 与文献方法的关系</h2>
+<table>
+<tr><th>组件</th><th>来源</th><th>我们是否原创</th></tr>
+<tr><td>Sliced Wasserstein 数学框架</td><td>经典，1998 Rabin 等</td><td>否（标准工具）</td></tr>
+<tr><td>多尺度 LAB + SWD 组合</td><td>MS-SWD (ECCV 2024)</td><td>否（论文提出的度量）</td></tr>
+<tr><td>把它作为 retouching 训练 loss</td><td>—</td><td>✅ 目前文献没人这么用</td></tr>
+<tr><td>后续加三元对比项（"远离 raw"）</td><td>受 WCR (2023) 启发</td><td>✅ 原创组合</td></tr>
+</table>
+<p class="meta">命名 "MS-SWC" 是我们起的 —— 把 MS-SWD 的多尺度切片 Wasserstein，与对比（Contrastive）结构组合。本周先实现前半（positive-only），对比项留作下一步。</p>
+
+<h2>6. 实现情况</h2>
+<p>主文件 <code>src/losses/ms_swc_loss.py</code>，约 120 行纯 PyTorch：</p>
+<ul>
+<li>可微 sRGB → CIELAB 转换（D65 白点，标准矩阵）</li>
+<li>可学习可关闭的 Gaussian 金字塔（sigma=1.0，kernel=5）</li>
+<li>SWD 核心：每次 forward 重采 128 个单位球方向、投影、排序、L1</li>
+<li>默认超参与 ECCV 2024 论文对齐（5 scales × 128 projections）</li>
+</ul>
+<p>已写 <b>6 个单元测试全绿</b>：恒等（<code>loss(x, x) = 0</code>）、梯度非零有限、色调偏离远 &gt; 小扰动、权重线性缩放等。代码已推到 <code>origin/Zijian</code>。</p>
+
+<h2>7. 本周预期产出</h2>
+<ul>
+<li>✅ 设计 + 实现 + 单测 + 文档</li>
+<li>🟡 正在跑：V1 + MS-SWC only 诊断实验（5000 张，100 epoch）</li>
+<li>⏭ 下步：根据数值量级确定权重，跑 <code>L1 + SSIM + MS-SWC</code> 完整组合 vs 当前 baseline</li>
+</ul>
+
+<hr>
+<p class="meta">完整设计文档：<code>docs/ms_swc_loss.md</code> &nbsp;|&nbsp; 代码：<code>src/losses/ms_swc_loss.py</code> &nbsp;|&nbsp; 分支：<code>Zijian</code></p>
+
+</body>
+</html>

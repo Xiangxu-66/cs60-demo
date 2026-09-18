@@ -1,0 +1,13 @@
+# RWKV Bottleneck V8 + DyRSRNet Bidirectional Spatial Recurrence
+#
+# This version integrates DyRSRNet's Spatial_Receptive_Fusion module:
+# 1. Bidirectional recurrence (horizontal ↔ vertical)
+# 2. OSRM for multi-scale spatial modeling in TimeMix
+# 3. Independent spatial parameters per direction
+#
+# Reference: DyRSRNet (PRCV'25 Oral)
+_target_: src.models.bottlenecks.versions.v8_bidirectional.RWKVBottleneckV8
+
+hidden_dim: 384
+num_layers: 6
+drop_rate: 0.1

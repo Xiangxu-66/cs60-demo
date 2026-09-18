@@ -1,0 +1,27 @@
+# E-4: DINOv3 ViT-B with fusion configuration
+_target_: src.models.encoders.v2_dinov3.DINOv3LoRAEncoder
+model_name: "facebook/dinov3-vitb16-pretrain-lvd1689m"
+frozen: true
+patch_size: 16
+embed_dim: 768
+
+# LoRA params
+lora_rank: 8
+lora_alpha: 32
+lora_dropout: 0.05
+
+# Branch fusion configuration (位置1: Bottleneck Fusion)
+# 可选: "gate", "concat", "add", "gated_residual", "attention_gate"
+# - gate: 平衡性能和计算量（推荐默认）
+# - gated_residual: 保留 DINO 主干，渐进注入细节
+# - attention_gate: 最强但最贵，学习特征相关性
+fusion_mode: "gate"
+
+# Branch enable flags
+enable_dino: true
+enable_local: true
+enable_colour: true
+
+# Skip connection configuration
+skip_enabled: true
+return_skip: true

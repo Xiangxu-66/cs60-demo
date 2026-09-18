@@ -1,0 +1,5 @@
+# @package _global_
+# Family-specific baseline state: histogram/global token enabled.
+
+cnn_encoder:
+  use_global_token: true

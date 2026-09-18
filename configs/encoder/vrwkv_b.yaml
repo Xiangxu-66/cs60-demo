@@ -1,0 +1,9 @@
+# E-3: VRWKV-B (segmentation pretrained encoder)
+_target_: src.models.encoders.vrwkv_encoder.VRWKVEncoder
+checkpoint: "upernet_vrwkv_adapter_base_512_160k_ade20k.pth"
+frozen: true
+patch_size: 16
+embed_dims: 768
+depth: 12
+post_norm: true
+init_values: 1.0e-5

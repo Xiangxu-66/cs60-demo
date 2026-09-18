@@ -1,0 +1,5 @@
+# @package _global_
+# RWKV depth ablation: 9 layers.
+
+bottleneck:
+  num_layers: 9

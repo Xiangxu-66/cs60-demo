@@ -1,0 +1,14 @@
+{
+  "experiment_name": "vrwkv_2000img",
+  "encoder": "unknown",
+  "bottleneck": "src.models.bottlenecks.cnn_bottleneck.CNNBottleneck",
+  "metrics": {
+    "test/loss": 0.09886085242033005,
+    "test/loss_l1": 0.05140507593750954,
+    "test/loss_ssim": 0.03601017966866493,
+    "test/loss_perceptual": 0.011445604264736176,
+    "test/psnr": 20.388504028320312,
+    "test/ssim": 0.819949209690094,
+    "test/lpips": 0.11043235659599304
+  }
+}

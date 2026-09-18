@@ -1,0 +1,18 @@
+# RWKV-7 bottleneck (phase-1 conservative implementation)
+_target_: src.models.bottlenecks.rwkv7_bottleneck.RWKV7Bottleneck
+
+hidden_dim: 384
+num_layers: 6
+head_size: 64
+ffn_ratio: 4.0
+
+# Scaled-down LoRA-style inner dimensions for train-from-scratch bottleneck use.
+decay_lora_dim: 32
+aaa_lora_dim: 32
+mv_lora_dim: 16
+gate_lora_dim: 64
+
+use_omni_shift: false
+bidirectional: false
+use_cuda_kernel: true
+drop_rate: 0.0
