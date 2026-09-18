@@ -1,0 +1,25 @@
+# 方案B: 双支路空间感知版 CNN Decoder
+#
+# 核心思想：
+# - 语义支路: DINOv3 + RWKV → 高层语义理解
+# - 细节支路: Shallow CNN → 低层纹理提取
+# - Cross-Gated Attention: 语义调制细节的双向交互
+_target_: src.models.decoders.cnn_decoder_dual_branch.CNNDecoderWithDualBranch
+
+# Architecture parameters
+num_upsample_blocks: 4
+base_channels: 128
+residual_scale: 1.0
+
+# Detail branch (Shallow CNN)
+detail_base_channels: 32      # Base channels for shallow CNN
+detail_num_stages: 2          # Number of downsampling stages
+detail_out_channels: 64       # Output channels for cross-gated attention
+
+# Cross-gated attention
+use_cross_attention: true     # Enable cross-gated attention between branches
+
+# Refinement
+stage_depths: [1, 1, 2, 2]    # Number of refinement blocks per stage
+tail_blocks: 3                # Number of final refinement blocks
+residual_gain_init: 0.1       # Initial gain for residual blocks

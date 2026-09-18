@@ -1,0 +1,70 @@
+training:
+  max_epochs: 100
+  init_from_checkpoint: null
+  resume_from_checkpoint: null
+  final_fit_no_val: false
+  batch_size_per_device: 8
+  accumulate_grad_batches: 4  # effective_batch = batch_size_per_device * accumulate_grad_batches = 8 * 4 = 32
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-4
+  scheduler: cosine         # cosine / step / plateau
+  warmup_epochs: 5
+  early_stopping:
+    patience: 15
+    monitor: "val/psnr"
+    mode: "max"
+  gradient_clip_val: 1.0
+
+evaluation:
+  save_samples_every_n_epochs: 10
+  num_visualization_samples: 8
+
+  # Validation metrics: auto-derived from active loss components.
+  # null  = follow loss config (enable iff the matching loss fn is active)
+  # true  = always enable
+  # false = always disable
+  val:
+    enable_lpips: null
+    enable_nima: false
+    enable_clip: false
+    enable_vgg_perceptual: false
+    enable_delta_e: false   # skip during training for speed
+
+  # Test metrics: same loss-derived gates as val, plus explicit benchmark metrics.
+  # enable_delta_e reports CIEDE2000, required for FiveK benchmark comparability.
+  test:
+    enable_lpips: null
+    enable_nima: true
+    enable_clip: false
+    enable_vgg_perceptual: false
+    enable_delta_e: true    # CIEDE2000 — standard FiveK benchmark metric
+
+logging:
+  log_dir: "outputs/logs"
+  console_level: "INFO"
+
+checkpoint:
+  save_top_k: 1
+  monitor: "val/psnr"
+  mode: "max"
+  dirpath: "outputs/checkpoints"
+
+experiment_name_suffix: ""
+
+# PyTorch profiler — enabled by default for all experiments.
+# Records per-op CUDA/CPU time and FLOPs for the first few steps.
+profile: true
+profiler:
+  wait: 1
+  warmup: 1
+  active: 3
+  log_dir: "outputs/profiler_logs"
+
+model:
+  # Encoder skip connection layers (0-indexed)
+  # DINOv2 has 12 layers. The current HuggingFace DINOv3 ViT-B checkpoint used
+  # in this repo also exposes 12 transformer blocks.
+  # Repo standard for DINOv3 ViT-B: [2, 5, 8, 11]
+  # It samples roughly 1/4, 1/2, 3/4, and final depth.
+  # Set to null or empty list to disable skip connections
+  encoder_skip_layers: null

@@ -1,0 +1,14 @@
+# @package _global_
+# Single-variable loss ablation: remove perceptual, keep L1 + SSIM.
+
+loss:
+  _target_: src.losses.combined_loss.CombinedLoss
+  components:
+    l1:
+      _target_: src.losses.l1_loss.L1Loss
+      weight: 1.0
+    ssim:
+      _target_: src.losses.ssim_loss.SSIMLoss
+      weight: 0.1
+      window_size: 11
+    lpips: null

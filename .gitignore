@@ -1,0 +1,63 @@
+# ===== Data =====
+data/fivek/
+data/ppr10k/
+data/*/
+
+# ===== Training outputs =====
+outputs/
+!outputs/.gitkeep
+
+# ===== Model weights =====
+*.pth
+*.ckpt
+*.pt
+*.safetensors
+
+# ===== Conda / Python envs =====
+.conda/
+env/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# ===== IDE =====
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*~
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== Hydra / experiment outputs =====
+multirun/
+.hydra/
+
+# ===== Jupyter =====
+.ipynb_checkpoints/
+*.ipynb
+
+# ===== Pre-commit =====
+.pre-commit-cache/
+
+# ===== Paper build artefacts =====
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.pdf
+paper/*.bbl
+paper/*.blg
+paper/*.synctex.gz
+
+# ===== Experiment results =====
+results/

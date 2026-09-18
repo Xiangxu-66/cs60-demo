@@ -1,0 +1,28 @@
+# CNN decoder whose image-guidance skip path uses a learned LUT image.
+_target_: src.models.decoders.cnn_lut_skip_decoder.CNNLUTSkipDecoder
+
+num_upsample_blocks: 4
+base_channels: 64
+residual_scale: 0.5
+img_proj_channels: 3
+predict_residual: true
+
+# U-Net feature skip settings. E2 uses the LUT image skip as the main novelty;
+# keep encoder feature skips off unless you intentionally add a second factor.
+skip_enabled: false
+skip_fusion_mode: "gated_residual"
+skip_stages: [1, 2, 3]
+
+# Image guidance skip settings. With this decoder, the image guidance source is
+# LUT(img), or a raw/LUT blend controlled by lut_skip_blend.
+img_skip_enabled: true
+img_skip_fusion_mode: "concat"
+
+# LUT skip branch.
+num_luts: 5
+lut_size: 33
+use_1d_lut: true
+lut_skip_blend: 1.0
+
+film_stages: []
+film_cond_dim: 384

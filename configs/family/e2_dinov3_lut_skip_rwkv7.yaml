@@ -1,0 +1,23 @@
+# @package _global_
+# E2: DINOv3 encoder + RWKV7 + CNN decoder with LUT-transformed skip guidance.
+
+defaults:
+  - override /encoder: dinov3_b
+  - override /bottleneck: rwkv7
+  - override /decoder: cnn_lut_skip
+  - override /loss: stage1
+  - _self_
+
+experiment_name: "E2_dinov3_lut_skip_rwkv7"
+
+model:
+  main_encoder_proj_dim: 384
+  encoder_skip_layers: null
+
+decoder:
+  skip_enabled: false
+  img_skip_enabled: true
+  num_luts: 5
+  lut_size: 33
+  use_1d_lut: true
+  lut_skip_blend: 1.0

@@ -1,0 +1,20 @@
+# PSNR-oriented CNN decoder for DINOv3 patch_size=16.
+_target_: src.models.decoders.cnn_decoder_v1.CNNDecoderV1
+
+# Four stages map the DINOv3 token grid back to full resolution. The last stage
+# uses explicit target-size interpolation plus conv refinement, so the output
+# head receives feature maps already aligned to the input image.
+num_upsample_blocks: 4
+precise_upsample_stages: 1
+
+# Wider high-resolution stages than the original CNN decoder.
+base_channels: 128
+channel_multipliers: [1.0, 1.0, 1.0, 0.75, 0.75]
+min_channels: 64
+stage_depths: [1, 1, 2, 2]
+tail_blocks: 3
+
+# Stronger image guidance branch and residual-bounded output.
+img_proj_channels: 32
+residual_scale: 1.0
+residual_gain_init: 0.1

@@ -1,0 +1,8 @@
+# @package _global_
+# Fusion preset: project + add at every fusion position.
+# See configs/fusion/concat.yaml for what each key controls.
+
+fusion_mode: "add"
+decoder:
+  skip_fusion_mode: "add"
+  img_skip_fusion_mode: "add"

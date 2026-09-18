@@ -1,0 +1,12 @@
+# @package _global_
+# V3: + Hierarchical dual-branch (fine + coarse granularity)
+# Problem solved: Single scale cannot model multi-scale color perception
+# Source: HiRWKV (IEEE TIP)
+bottleneck:
+  _target_: src.models.bottlenecks.versions.v3_hierarchical.RWKVBottleneckV3
+  hidden_dim: 384
+  num_layers: 6
+  drop_rate: 0.1
+  hsv_sort_key: "hue"
+  fine_scale: 1
+  coarse_scale: 4

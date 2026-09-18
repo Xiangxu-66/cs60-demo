@@ -1,0 +1,14 @@
+# @package _global_
+# Canonical V2 DINOv3 + RWKV7 family baseline.
+
+defaults:
+  - override /encoder: v2_dinov3_b
+  - override /bottleneck: rwkv7_vision
+  - override /decoder: cnn_skip
+  - override /loss: stage1
+  - _self_
+
+experiment_name: "v2_dinov3_rwkv7"
+
+decoder:
+  img_skip_enabled: false

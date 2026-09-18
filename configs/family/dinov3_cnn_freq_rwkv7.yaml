@@ -1,0 +1,21 @@
+# @package _global_
+# Canonical DINOv3 + frequency-gated CNN + RWKV7 family baseline.
+
+defaults:
+  - /cnn_encoder: cnn_freq_gated
+  - override /encoder: dinov3_b
+  - override /bottleneck: rwkv7_vision
+  - override /decoder: cnn_skip
+  - override /loss: stage1
+  - _self_
+
+experiment_name: "dinov3_cnn_freq_rwkv7"
+
+model:
+  main_encoder_proj_dim: 384
+
+decoder:
+  img_skip_enabled: false
+  color_naf_channels: [64, 64, 64]  # freq encoder outputs 64ch at all stages
+
+fusion_mode: "add"

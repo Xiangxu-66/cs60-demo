@@ -1,0 +1,61 @@
+# CNN Decoder with Progressive Encoder Skip Connections
+# 支持三种融合位置的可配置融合方式
+_target_: src.models.decoders.cnn_skip_decoder.CNNSkipDecoder
+
+# Architecture parameters
+num_upsample_blocks: 4
+base_channels: 64
+residual_scale: 0.5
+img_proj_channels: 3
+predict_residual: true
+
+# ===== 融合位置配置 =====
+
+# 位置1: Bottleneck Fusion (在 Encoder 配置中)
+# - 配置文件: configs/encoder/v2_dinov3_b.yaml
+# - 参数: fusion_mode
+# - 默认: "gate"
+
+# 位置2: U-Net Skip Fusion (Encoder Skip + Decoder Feature)
+# 可选: "concat", "add", "gate", "gated_residual", "attention_gate"
+# - gated_residual: 保留原始 skip 信息，残差注入（推荐默认）
+# - attention_gate: 空间注意力，聚焦重要区域
+# - gate: 简单高效
+skip_fusion_mode: "gated_residual"
+
+# 位置3: Image Guidance Fusion (Multi-scale Image + Decoder Feature)
+# - img_skip_enabled: 控制是否使用图像引导
+# - img_skip_fusion_mode: 融合方式
+#   "concat": 保留原始 1×1 conv 路径（默认，与历史基线 bit-exact）
+#   "add" / "gate" / "gated_residual" / "attention_gate": 走 MultiScaleFusionBlock
+img_skip_enabled: true
+img_skip_fusion_mode: "concat"
+
+# Skip connection 控制参数
+skip_enabled: true
+skip_stages: [1, 2, 3]  # 在哪些上采样阶段应用 encoder skip
+
+# ===== 不同场景的推荐配置 =====
+
+# 场景 A: 平衡性能（默认）
+# fusion_mode: "gate"
+# skip_fusion_mode: "gated_residual"
+# img_skip_enabled: true
+
+# 场景 B: 追求最佳质量
+# fusion_mode: "attention_gate"
+# skip_fusion_mode: "attention_gate"
+# img_skip_enabled: true
+
+# 场景 C: 计算高效
+# fusion_mode: "gate"
+# skip_fusion_mode: "gate"
+# img_skip_enabled: false
+
+# ===== FiLM Histogram Conditioning =====
+# film_stages: Which upsample blocks to apply FiLM after skip fusion.
+#   [] = disabled (default, backward compatible with all existing configs)
+#   [2, 3] = apply at H/2 and H resolution (recommended for color_naf experiments)
+# film_cond_dim: Must match cnn_encoder.token_dim (384 for ColorNAF).
+film_stages: []
+film_cond_dim: 384

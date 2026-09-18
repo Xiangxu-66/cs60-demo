@@ -1,0 +1,17 @@
+# CNN Decoder with OSRM (Omni-Scale Receptive Module) from DyRSRNet
+#
+# This decoder integrates OSRM into residual blocks for multi-scale receptive
+# field fusion. Training uses multi-branch fusion; inference uses reparameterized
+# single-branch for zero overhead.
+#
+# Reference: DyRSRNet (PRCV'25 Oral)
+_target_: src.models.decoders.cnn_decoder_with_osrm.CNNDecoderWithOSRM
+
+# Architecture parameters (same as CNNDecoder for fair comparison)
+num_upsample_blocks: 4
+base_channels: 128
+residual_scale: 1.0
+img_proj_channels: 16
+
+# OSRM-specific parameters
+use_osrm: true              # Whether to use OSRM in residual blocks

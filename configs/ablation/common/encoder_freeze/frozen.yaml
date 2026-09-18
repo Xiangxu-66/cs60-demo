@@ -1,0 +1,5 @@
+# @package _global_
+# Explicit baseline state for encoder freezing.
+
+encoder:
+  frozen: true

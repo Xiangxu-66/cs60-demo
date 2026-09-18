@@ -1,0 +1,39 @@
+# Gated Residual CNN Decoder with Soft-Gate Skip mechanism (Scheme A)
+#
+# This decoder implements:
+#   1. Soft-Gate Skip: Decoder generates gates to dynamically modulate encoder skips
+#   2. Residual Blocks: Deep residual refinement for stable training
+#   3. Progressive Upsampling: PixelShuffle + gated skip fusion
+#
+# Architecture:
+#   Token projection -> 2D reshape -> Progressive upsampling blocks -> Output head
+#
+# Each upsampling block:
+#   1. PixelShuffle (2x) or bilinear (final)
+#   2. Soft-Gate Skip fusion (decoder gate modulates encoder skip)
+#   3. Residual blocks for refinement
+#
+# Key differences from CNNDecoderWithSkip:
+#   - Gate is generated FROM decoder features (not independent attention)
+#   - Decoder controls how much skip information to use
+#   - Stronger residual design for training stability
+#
+_target_: src.models.decoders.cnn_decoder_gated.GatedResidualDecoder
+
+# Decoder architecture
+num_upsample_blocks: 4       # Number of upsampling stages
+base_channels: 64            # Channel count after initial projection
+
+# Skip connections
+skip_channels: null          # Auto: [768, 768, 768, 768] for DINOv2-B
+                            # Or specify: [768, 768] for 2 skip layers
+
+# Training parameters
+residual_scale: 0.5         # Max residual magnitude (tanh output scale)
+predict_residual: true      # Residual output mode
+dropout: 0.0                # Dropout rate for residual blocks
+
+# Refinement
+num_skip_fusion_blocks: 2   # Residual blocks after skip fusion (increased for stability)
+num_final_blocks: 3         # Residual blocks in final stage
+use_final_align: true       # Use alignment refinement

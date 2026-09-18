@@ -1,0 +1,7 @@
+# B-2: Transformer bottleneck (quality upper bound, O(N²))
+_target_: src.models.bottlenecks.transformer_bottleneck.TransformerBottleneck
+hidden_dim: 384
+num_layers: 6
+num_heads: 6
+mlp_ratio: 4.0
+drop_rate: 0.1

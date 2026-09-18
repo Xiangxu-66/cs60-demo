@@ -1,0 +1,16 @@
+[
+    {
+        "experiment": "test_profiler",
+        "gflops": 1387.09,
+        "cuda_ms": 1465.5,
+        "cpu_ms": 1672.45,
+        "peak_vram_mb": 1478.8
+    },
+    {
+        "experiment": "dinov3_2000img",
+        "gflops": 3383.08,
+        "cuda_ms": 1654.32,
+        "cpu_ms": 2923.83,
+        "peak_vram_mb": 4419.2
+    }
+]

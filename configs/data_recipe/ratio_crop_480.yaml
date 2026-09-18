@@ -1,0 +1,16 @@
+# @package _global_
+
+# Literature-style 480p training:
+# - keep aspect ratio
+# - resize shorter edge to 480
+# - apply independent random height/width ratio crops
+# - eval/test: short-edge resize to 480 (matches mainstream FiveK benchmark protocol)
+# - pad batches to a common multiple at collate time
+data:
+  image_size: 480
+  crop_size: null
+  train_crop_mode: "ratio"
+  ratio_crop_min_scale: 0.6
+  ratio_crop_max_scale: 1.0
+  eval_resize_mode: "short_edge"
+  pad_to_multiple: 16

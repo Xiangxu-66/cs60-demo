@@ -1,0 +1,8 @@
+# @package _global_
+# Fusion preset: simple gated fusion at every fusion position.
+# See configs/fusion/concat.yaml for what each key controls.
+
+fusion_mode: "gate"
+decoder:
+  skip_fusion_mode: "gate"
+  img_skip_fusion_mode: "gate"

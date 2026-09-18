@@ -1,0 +1,21 @@
+# Stage 1 variant C: keep LPIPS and add MS-SWC on top
+# Tests whether MS-SWC provides complementary signal to existing stage1 stack
+_target_: src.losses.combined_loss.CombinedLoss
+components:
+  l1:
+    _target_: src.losses.l1_loss.L1Loss
+    weight: 1.0
+  ssim:
+    _target_: src.losses.ssim_loss.SSIMLoss
+    weight: 0.1
+    window_size: 11
+  lpips:
+    _target_: src.losses.lpips_loss.LPIPSLoss
+    weight: 0.01
+  ms_swc:
+    _target_: src.losses.ms_swc_loss.MSSWCLoss
+    weight: 0.01
+    num_scales: 5
+    num_projections: 128
+    pyr_sigma: 1.0
+    pyr_ksize: 5
