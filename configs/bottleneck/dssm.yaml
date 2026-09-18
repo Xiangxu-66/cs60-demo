@@ -1,0 +1,18 @@
+# DSSM Bottleneck - 4-Directional Selective State Space Model
+#
+# This bottleneck implements DyRSRNet's Dynamic State Space Model with:
+# 1. 4-directional selective scan (left→right, top→bottom, right→left, bottom→top)
+# 2. Dual DSSM for bidirectional modeling
+# 3. RCSS blocks combining DSSM with spatial modeling
+#
+# Note: Requires mamba_ssm to be installed:
+#   pip install mamba-ssm causal-conv1d
+#
+# Reference: DyRSRNet (PRCV'25 Oral)
+_target_: src.models.bottlenecks.dssm_bottleneck.DSSMBottleneck
+
+hidden_dim: 384
+num_layers: 6
+d_state: 16
+expand: 2.0
+drop_path: 0.0

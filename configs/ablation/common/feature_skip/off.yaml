@@ -1,0 +1,5 @@
+# @package _global_
+# Single-variable ablation: disable decoder feature skip fusion.
+
+decoder:
+  skip_enabled: false

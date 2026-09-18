@@ -1,0 +1,5 @@
+# @package _global_
+# Single-variable ablation: enable raw-image guidance skip.
+
+decoder:
+  img_skip_enabled: true

@@ -1,0 +1,35 @@
+# LUT Fusion Decoder — 神经 LUT 融合版图像增强 Decoder
+#
+# 方案C: 模拟专业修图的物理过程
+#   1. 全局调色：通过可学习的 1D/3D LUT 实现色彩风格转换
+#   2. 局部修饰：通过空间权重图和残差实现区域化调整
+#   3. 自适应融合：根据图像内容动态混合全局和局部
+#
+# 架构:
+#   Global Branch: RWKV → LUT weights → 全局调色
+#   Spatial Branch: CNN + DINO skip → 空间权重图 M + 残差 R
+#   融合: Output = (1-M) * LUT_output + M * (Input + R)
+_target_: src.models.decoders.cnn_decoder_lut.CNNDecoderLUT
+
+# === Architecture Parameters ===
+num_upsample_blocks: 4          # Spatial branch 上采样阶段数
+base_channels: 64               # Spatial branch 基础通道数
+residual_scale: 0.5             # 局部残差缩放
+
+# === LUT Parameters ===
+num_luts: 5                     # 基 LUT 数量 (推荐: 5-10)
+lut_size: 33                    # LUT 网格尺寸 (1D: 33/65, 3D: 17/33)
+use_1d_lut: true                # true=1D LUT (快速), false=3D LUT (更精确)
+
+# === Skip Connection ===
+use_skip_attention: true        # 是否使用 skip 注意力融合
+# skip_channels 将在实验配置中根据 encoder 设置
+
+# === Notes ===
+# 1D LUT vs 3D LUT:
+#   - 1D LUT: 每通道独立映射，速度快，适合快速训练
+#   - 3D LUT: 联合 RGB 三通道映射，更精确，能处理色调调整
+#
+# 推荐配置:
+#   - 快速实验: use_1d_lut=true, lut_size=33
+#   - 追求精度: use_1d_lut=false, lut_size=17 (3D LUT 计算量大，建议较小尺寸)

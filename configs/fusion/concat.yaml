@@ -1,0 +1,15 @@
+# @package _global_
+# Fusion preset: concat at every fusion position.
+#
+# Sets the fusion mode at three positions consistently so a single override
+# (`+fusion=concat`) sweeps the whole pipeline:
+#   - fusion_mode             : pipeline pre-bottleneck token fusion (DINO + CNN encoder)
+#   - decoder.skip_fusion_mode: encoder skip → decoder feature fusion at each upsample stage
+#   - decoder.img_skip_fusion_mode: original-image guidance fusion at each upsample stage
+#
+# v2_dinov3 encoder.fusion_mode is intentionally NOT touched here.
+
+fusion_mode: "concat"
+decoder:
+  skip_fusion_mode: "concat"
+  img_skip_fusion_mode: "concat"

@@ -1,0 +1,5 @@
+# B-3 ★: RWKV bottleneck (core method, O(N))
+_target_: src.models.bottlenecks.rwkv_bottleneck.RWKVBottleneckV1
+hidden_dim: 384
+num_layers: 6
+drop_rate: 0.1

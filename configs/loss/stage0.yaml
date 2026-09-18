@@ -1,0 +1,8 @@
+# Stage 0 loss: pure L1 pixel-level fitting.
+_target_: src.losses.combined_loss.CombinedLoss
+components:
+  l1:
+    _target_: src.losses.l1_loss.L1Loss
+    weight: 1.0
+  ssim: null
+  lpips: null

@@ -1,0 +1,9 @@
+# @package _global_
+# V1 baseline — same as bottleneck/rwkv.yaml
+# This config file is a no-op override (V1 is already the default bottleneck)
+# Included for explicit version tracking in experiment naming
+bottleneck:
+  _target_: src.models.bottlenecks.rwkv_bottleneck.RWKVBottleneckV1
+  hidden_dim: 384
+  num_layers: 6
+  drop_rate: 0.1

@@ -1,0 +1,12 @@
+# RWKV Bottleneck V7 + DyRSRNet Enhancements
+#
+# This version integrates DyRSRNet's Channel_Receptive_Interaction module:
+# 1. OSRM (Omni-Scale Receptive Module) for multi-scale spatial modeling
+# 2. Squared ReLU activation (ReLU²) for better feature representation
+#
+# Reference: DyRSRNet (PRCV'25 Oral)
+_target_: src.models.bottlenecks.versions.v7_squared_relu.RWKVBottleneckV7
+
+hidden_dim: 384
+num_layers: 6
+drop_rate: 0.1

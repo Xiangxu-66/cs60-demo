@@ -1,0 +1,6 @@
+# @package _global_
+# Family-specific ablation: enable histogram FiLM conditioning.
+
+decoder:
+  film_stages: [2, 3]
+  film_cond_dim: 384

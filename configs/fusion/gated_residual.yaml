@@ -1,0 +1,8 @@
+# @package _global_
+# Fusion preset: gated residual fusion at every fusion position.
+# See configs/fusion/concat.yaml for what each key controls.
+
+fusion_mode: "gated_residual"
+decoder:
+  skip_fusion_mode: "gated_residual"
+  img_skip_fusion_mode: "gated_residual"

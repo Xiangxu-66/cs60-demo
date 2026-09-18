@@ -1,0 +1,19 @@
+# RWKV-7 bottleneck (phase-2 visual-enhanced variant)
+_target_: src.models.bottlenecks.rwkv7_bottleneck.RWKV7Bottleneck
+
+hidden_dim: 384
+num_layers: 6
+head_size: 64
+ffn_ratio: 4.0
+
+decay_lora_dim: 32
+aaa_lora_dim: 32
+mv_lora_dim: 16
+gate_lora_dim: 64
+
+# Phase-2 visual adaptations
+use_omni_shift: true
+bidirectional: true
+
+use_cuda_kernel: true
+drop_rate: 0.0

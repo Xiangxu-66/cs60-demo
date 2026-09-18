@@ -1,0 +1,28 @@
+# LUT Decoder with Shallow CNN gated fusion
+#
+# Architecture:
+#   1. Global Branch: RWKV features → LUT weights → global color adjustment
+#   2. Spatial Branch: CNN features → gated upsampling → M, R
+#   3. Fusion: enhanced = (1-M) * LUT(img) + M * (img + R)
+_target_: src.models.decoders.cnn_decoder_lut_cnn.CNNDecoderLUTCNN
+
+# === Architecture Parameters ===
+num_upsample_blocks: 4          # Spatial branch upsampling stages
+base_channels: 64               # Spatial branch base channels
+residual_scale: 0.5             # Residual output scaling
+
+# === LUT Parameters ===
+num_luts: 5                     # Number of base LUTs
+lut_size: 33                    # LUT grid size (1D: 33/65)
+use_1d_lut: true                # Use 1D LUT (faster, recommended)
+
+# === CNN Feature Parameters ===
+# Channel counts for CNN features from ShallowCNNEncoder
+# Should match the output_channels in shallow_cnn.yaml
+cnn_feature_channels: [64, 64, 64, 64]
+
+# === Notes ===
+# This decoder requires:
+# - x: RWKV bottleneck tokens (B, N, C)
+# - img: Original input image (B, 3, H, W)
+# - cnn_features: Multi-scale features from ShallowCNNEncoder

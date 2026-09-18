@@ -1,0 +1,10 @@
+# B-4: VMamba bottleneck — official SS2D architecture (O(N) peer comparison)
+_target_: src.models.bottlenecks.vmamba_bottleneck.VMambaBottleneck
+hidden_dim: 384
+num_layers: 6
+drop_rate: 0.1
+drop_path_rate: 0.1
+d_state: 16
+ssm_ratio: 2.0
+d_conv: 3
+mlp_ratio: 4.0

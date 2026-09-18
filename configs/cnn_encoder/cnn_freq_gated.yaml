@@ -1,0 +1,9 @@
+_target_: src.models.encoders.cnn_freq_gated.CNNFreqGatedEncoder
+
+in_channels: 3
+base_channels: 32
+num_stages: 3
+output_channels: 64
+num_frequency_scales: 3
+freq_scale_init: 0.05
+skip_scale_init: 0.1

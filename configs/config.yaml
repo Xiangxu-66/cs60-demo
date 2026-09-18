@@ -1,0 +1,25 @@
+defaults:
+  - base
+  - encoder: dinov3_b
+  - bottleneck: cnn
+  - decoder: cnn
+  - loss: stage1
+  - data: fivek
+  - optional data_recipe: full_image_480
+  - _self_
+  - optional family: null
+  - optional variant: null
+  - optional run_mode: null
+  - optional bottleneck_version: null
+  - optional fusion: null
+  - optional ablation: null
+  - optional ablation/common/encoder_freeze: null
+  - optional ablation/common/bottleneck: null
+  - optional ablation/common/rwkv_depth: null
+  - optional ablation/common/feature_skip: null
+  - optional ablation/common/img_skip: null
+  - optional ablation/color_naf_rwkv7/film: null
+  - optional ablation/color_naf_rwkv7/global_token: null
+
+experiment_name: "dinov3_cnn_cnn"
+seed: 42

@@ -1,0 +1,55 @@
+# ColorNAF Encoder: NAFNet-style encoder for color enhancement
+#
+# This encoder extracts multi-scale color and texture features with:
+# - Multi-colorspace input (RGB + Lab) for better color representation
+# - GRN (Global Response Normalization) for channel competition modeling
+# - SimpleGate for efficient feature gating
+# - Soft Histogram Token for global color statistics
+# - Multi-scale skip connections (stage 0, 1, 2)
+# - Semi-frozen training strategy (stage 0/1 frozen)
+#
+# Returns:
+#   (tokens, skip_dict) where:
+#   - tokens: (B, N+1, token_dim) with histogram token prepended
+#   - skip_dict: {"color_naf": {"stage0": ..., "stage1": ..., "stage2": ...}}
+
+_target_: src.models.encoders.color_naf.ColorNAFEncoder
+
+# Input configuration
+input_mode: "rgb_lab"  # Options: rgb, rgb_lab, rgb_lab_hsv
+                       # rgb_lab: RGB (3) + Lab (3) = 6 channels (recommended)
+                       # rgb: RGB only (3 channels)
+                       # rgb_lab_hsv: RGB (3) + L (1) + V (1) = 5 channels
+
+# Architecture
+base_channels: 64
+num_stages: 4
+channels: [64, 64, 128, 128]  # Channels per stage
+
+# Skip connection
+skip_stages: [0, 1, 2]  # Which stages to output for skip connections
+# stage0: (B, 64, H/2, W/2) - shallow features (edges, textures)
+# stage1: (B, 64, H/4, W/4) - mid-level features (local color patterns)
+# stage2: (B, 128, H/8, W/8) - deep features (semantic color)
+
+# Semi-frozen training strategy
+frozen_stages: [0, 1]  # Freeze stem + first internal stage
+                       # Options:
+                       #   [0, 1]: Semi-frozen (recommended) - stable low-level features
+                       #   []: Fully trainable - may overfit
+                       #   [0, 1, 2]: More frozen - fastest training
+
+# Histogram token (global color statistics)
+use_global_token: true # When false, no histogram/global token is built or
+                       # prepended; encoder returns only spatial tokens.
+                       # Used as an ablation knob — see
+                       # configs/ablation/color_naf_rwkv7/global_token/.
+histogram_bins: 8     # Number of bins per channel
+                       # 8 bins × 3 channels (L, a, b) = 24 dimensions
+token_dim: 128        # Output token dimension
+
+# Notes:
+# - Use with CNNSkipDecoder and set color_naf_channels=[64, 64, 128]
+# - Histogram token is prepended to H/8 spatial tokens (like a CLS-style global token)
+# - The pipeline resizes H/8 spatial tokens to the DINO grid before "concat"/"add" fusion
+# - Soft histogram uses normalized Lab channels so the global color statistics stay well-behaved

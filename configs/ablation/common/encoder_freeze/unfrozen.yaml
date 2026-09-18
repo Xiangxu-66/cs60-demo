@@ -1,0 +1,8 @@
+# @package _global_
+# Single-variable ablation: unfreeze the main encoder.
+
+encoder:
+  frozen: false
+
+training:
+  learning_rate: 5.0e-5

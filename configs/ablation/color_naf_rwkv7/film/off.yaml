@@ -1,0 +1,5 @@
+# @package _global_
+# Family-specific baseline state: FiLM disabled.
+
+decoder:
+  film_stages: []

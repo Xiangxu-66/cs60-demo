@@ -1,0 +1,5 @@
+# @package _global_
+# RWKV depth baseline: 6 layers.
+
+bottleneck:
+  num_layers: 6

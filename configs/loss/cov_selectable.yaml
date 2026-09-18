@@ -1,0 +1,70 @@
+﻿_target_: src.losses.selectable_adaptive_loss.SelectableAdaptiveLoss
+_recursive_: false
+use_adaptive_loss: true
+components:
+  l1:
+    enabled: true
+    _target_: src.losses.l1_loss.L1Loss
+    weight: 1.0
+  ssim:
+    enabled: true
+    _target_: src.losses.ssim_loss.SSIMLoss
+    weight: 1.0
+    window_size: 11
+  hist:
+    enabled: false
+    _target_: src.losses.color_histogram_loss.ColorHistogramLoss
+    weight: 1.0
+    num_bins: 64
+  color_angle:
+    enabled: false
+    _target_: src.losses.color_angle_loss.ColorAngleLoss
+    weight: 1.0
+    mode: "cosine"
+    min_norm: 1.0e-3
+  perceptual:
+    enabled: true
+    _target_: src.losses.perceptual_loss.PerceptualLoss
+    weight: 1.0
+    layers:
+      - "relu1_2"
+      - "relu2_2"
+      - "relu3_3"
+  lpips:
+    enabled: true
+    _target_: src.losses.lpips_loss.LPIPSLoss
+    weight: 1.0
+  nima:
+    enabled: false
+    _target_: src.losses.nima_loss.NIMALoss
+    weight: 1.0
+  color_constancy:
+    enabled: false
+    _target_: src.losses.color_constancy_loss.ColorConstancyLoss
+    weight: 1.0
+  style:
+    enabled: false
+    _target_: src.losses.style_loss.StyleLoss
+    weight: 1.0
+  clip:
+    enabled: false
+    _target_: src.losses.clip_loss.CLIPLoss
+    weight: 1.0
+
+loss_weights:
+  l1: 1.0
+  ssim: 0.1
+  hist: 0.03
+  color_angle: 0.02
+  lpips: 0.05
+  nima: 0.005
+  perceptual: 0.01
+  clip: 0.01
+  color_constancy: 0.02
+  style: 0.03
+adaptive:
+  warmup_steps: 10
+  ema_decay: 0.9
+  epsilon: 1.0e-8
+  weight_min: 0.5
+  weight_max: 2

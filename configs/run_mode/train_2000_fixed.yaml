@@ -1,0 +1,16 @@
+# @package _global_
+
+# Fixed 2000-image training protocol:
+# - use configs/splits/five/{train,val,test}.txt
+# - use the first 2000 images from the fixed train split
+# - keep validation and test fixed at 500 images each
+
+experiment_name_suffix: "_train2000"
+
+data:
+  split_mode: "files_or_ratio"
+  train_subset_size: 2000
+  val_subset_size: null
+  test_subset_size: null
+  merge_train_val_for_final_fit: false
+  use_val_split: true

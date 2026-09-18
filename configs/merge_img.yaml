@@ -1,0 +1,32 @@
+# Configuration for merge_model_predictions.py
+#
+# This file contains all paths and settings for merging model predictions.
+
+# Dataset paths
+data_dir: /Users/shixin/Desktop/2026S1/capstone/real_fivek
+input_subdir: Original        # Input images subdirectory (a, raw, Original, etc.)
+target_subdir: expertC       # Target images subdirectory (c, expertC, etc.)
+
+# Model prediction zip files - specify directory OR list individual files
+zip_dir: /Users/shixin/Desktop/2026S1/capstone/comprison  # Directory containing .zip files (auto-scanned)
+# zip_files:                         # Or explicitly list files
+#   - /path/to/model1.zip
+#   - /path/to/model2.zip
+
+# Column display names (maps zip filename stem to display name)
+model_columns:
+  # Example: if zip file is "dinov3_rwkv7_cnn_full_048_22_78.zip"
+  # the key is "dinov3_rwkv7_cnn_full_048_22_78"
+  dinov3_rwkv7_cnn_full_048_22_78: "DINOv3+RWKV7+CNN"
+  dinov3_rwkv7vision_cnn_5000img_stage1_056_22_98: "DINOv3+RWKV7Vision+CNN"
+  run2_baseline_5000_100ep_stage1_dinov3_epoch_058_val: "DINOv3+RWKV4+CNN"
+  run2_v9_lut_plus_cnn_5000_100ep_stage1_dinov3_epoch_013_val: "DINOv3+RWKV4+V9+LUT"
+  run2_lut_plus_cnn_5000_100ep_stage1_dinov3_epoch_015_val: "DINOv3+RWKV4+LUT"
+
+# Output settings
+output_dir: outputs/model_comparison
+max_samples: null      # Limit number of comparison images (null = all)
+
+# Optional settings
+test_start_index: 4500  # Standard FiveK final 500 test images start here
+crop_size: 480          # Size to resize/crop images to

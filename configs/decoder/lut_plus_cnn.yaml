@@ -1,0 +1,31 @@
+# LUT + CNN refinement decoder (PR3.2 of TokenLUT-BG plan).
+#
+# PR3 (lut_v3.yaml) and PR3.1 (lut_v3_1.yaml with TV regularization) both
+# peak at val/psnr 20.62 around ep 4 then collapse — the bilateral grid
+# is fundamentally unstable on FiveK 5K. PR3.2 swaps the bilateral grid
+# (Head B + GuideNN) for the existing baseline CNNDecoder, which is known
+# to train stably for 32+ epochs on this exact pipeline.
+#
+# Architecture (predict_residual=False, returns full image):
+#   I_lut  = trilinear_lookup(weighted basis 3D LUTs, img)
+#   delta  = CNNDecoder(tokens, img=I_lut)              # ±0.3 tanh-bounded
+#   out    = clamp(I_lut + delta, 0, 1)
+#
+# CNN is sized smaller than the baseline (base_channels 64 vs 128) so it
+# acts as a refiner rather than dominating Head A. residual_scale is
+# 0.3 instead of baseline's 0.5 since LUT already does the heavy lifting.
+_target_: src.models.decoders.lut_plus_cnn_decoder.LUTPlusCNNDecoder
+
+# LUT branch (Head A)
+num_basis: 3
+lut_dim: 17
+mlp_hidden: 64
+random_init_scale: 0.15
+use_photometric_token: false
+photo_n_bins: 6
+
+# CNN refinement branch (Head R)
+cnn_num_upsample_blocks: 4
+cnn_base_channels: 64
+cnn_residual_scale: 0.3
+cnn_img_proj_channels: 3

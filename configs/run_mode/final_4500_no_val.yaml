@@ -1,0 +1,17 @@
+# @package _global_
+
+# Final FiveK comparison mode:
+# - train on the full 4500-image train+val pool
+# - keep the fixed 500-image test split untouched
+# - disable validation / early stopping
+# - save and test the last checkpoint
+
+experiment_name_suffix: "_final4500"
+
+training:
+  final_fit_no_val: true
+
+data:
+  split_mode: "files_or_ratio"
+  merge_train_val_for_final_fit: true
+  use_val_split: false

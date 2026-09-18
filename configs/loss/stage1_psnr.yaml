@@ -1,0 +1,7 @@
+# Stage 1 loss tuned for PSNR:
+# - MSE directly maximises PSNR (PSNR = 10·log10(1/MSE))
+_target_: src.losses.combined_loss.CombinedLoss
+components:
+  mse:
+    _target_: src.losses.mse_loss.MSELoss
+    weight: 1.0

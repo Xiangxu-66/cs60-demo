@@ -1,0 +1,41 @@
+# Evaluation sample configuration for model comparison.
+# Defines different sampling strategies for selecting test images.
+
+# Active sampling strategy: equidistant | difficulty | scene | custom
+active_strategy: equidistant
+
+# Strategy 1: Equidistant sampling (default)
+# Selects samples at regular intervals across the test set
+equidistant:
+  num_samples: 30              # Number of samples to select
+  start_idx: 0                 # Starting index in test set
+
+# Strategy 2: Difficulty-based sampling
+# Requires running a baseline model first to compute PSNR quantiles
+difficulty:
+  num_per_level: 10            # Samples per difficulty level
+  baseline_checkpoint: null    # Path to baseline checkpoint for PSNR calculation
+  levels: ["easy", "medium", "hard"]
+  # Quantile boundaries: easy=[0, 0.33), medium=[0.33, 0.67), hard=[0.67, 1.0]
+  quantiles: [0.33, 0.67]
+
+# Strategy 3: Scene-based sampling (manual annotation required)
+# Indices for different scene types in FiveK dataset
+scene:
+  portraits: []       # Portrait images with skin tones
+  landscape: []       # Landscape/nature scenes
+  indoor: []          # Indoor scenes
+  high_contrast: []   # High dynamic range scenes
+  low_light: []       # Low light / shadow scenes
+  colorful: []        # Highly saturated scenes
+
+# Strategy 4: Custom index selection
+# Explicit list of sample indices
+custom:
+  indices: []
+
+# Runtime: filled automatically when script runs
+# Do not edit manually
+runtime:
+  total_test_size: null
+  selected_indices: []

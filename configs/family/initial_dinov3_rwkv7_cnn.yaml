@@ -1,0 +1,18 @@
+# @package _global_
+# Initial baseline: DINOv3 + RWKV7 + CNN-only decoder behavior.
+
+defaults:
+  - override /encoder: dinov3_b
+  - override /bottleneck: rwkv7
+  - override /decoder: cnn_skip
+  - override /loss: stage1
+  - _self_
+
+experiment_name: "initial_dinov3_rwkv7_cnn"
+
+model:
+  main_encoder_proj_dim: 384
+
+decoder:
+  skip_enabled: false
+  img_skip_enabled: false

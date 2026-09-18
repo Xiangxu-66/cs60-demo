@@ -1,0 +1,31 @@
+# @package _global_
+# Canonical ColorNAF + RWKV7 family baseline.
+
+defaults:
+  - /cnn_encoder: color_naf
+  - override /encoder: dinov3_b
+  - override /bottleneck: rwkv7_vision
+  - override /decoder: cnn_skip
+  - override /loss: stage1
+  - _self_
+
+experiment_name: "color_naf_rwkv7"
+
+model:
+  main_encoder_proj_dim: 384
+
+cnn_encoder:
+  base_channels: 64
+  channels: [128, 128, 256, 256]
+  skip_stages: [0, 1, 2]
+  frozen_stages: []
+  token_dim: 384
+  align_skip_keys: true
+
+decoder:
+  base_channels: 128
+  color_naf_channels: [256, 128, 128]
+  skip_stages: [0, 1, 2]
+  img_skip_enabled: false
+
+fusion_mode: "add"
